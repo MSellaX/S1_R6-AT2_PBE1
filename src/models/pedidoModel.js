@@ -1,8 +1,8 @@
-const { sql, getConnection } = require("../config/db");
+const { sql, getConnection } = require("../config/db"); //importa a configuração do banco de dados
 
 const pedidoModel = {
 
-    buscarTodos: async () => {
+    buscarTodos: async () => { //busca todos os pedidos
         try {
             const pool = await getConnection();
 
@@ -12,38 +12,38 @@ const pedidoModel = {
                 FROM Pedidos P
                 INNER JOIN Clientes C
                     ON C.idCliente = P.idCliente
-            `;
+            `; //consulta SQL para buscar todos os pedidos com o nome do cliente associado
 
-            const result = await pool.request().query(querySQL);
+            const result = await pool.request().query(querySQL); //executa a consulta
             return result.recordset;
 
         } catch (error) {
-            console.error("ERRO ao buscar pedidos:", error);
+            console.error("ERRO ao buscar pedidos:", error); //log do erro
             throw error;
         }
     },
 
     buscarUm: async (idPedido) => {
         try {
-            const pool = await getConnection();
+            const pool = await getConnection(); //obtém a conexão com o banco de dados
 
             const querySQL = `
                 SELECT * FROM Pedidos WHERE idPedido = @idPedido
-            `;
+            `; //consulta SQL para buscar um pedido pelo idPedido
 
             const result = await pool.request()
-                .input("idPedido", sql.UniqueIdentifier, idPedido)
+                .input("idPedido", sql.UniqueIdentifier, idPedido) //adiciona o parâmetro idPedido à consulta
                 .query(querySQL);
 
             return result.recordset;
 
         } catch (error) {
-            console.error("ERRO ao buscar pedido:", error);
+            console.error("ERRO ao buscar pedido:", error); //log do erro
             throw error;
         }
     },
 
-    inserirPedido: async (
+    inserirPedido: async ( //insere um novo pedido
         idCliente,
         dataPedido,
         tipoEntrega,
@@ -54,7 +54,7 @@ const pedidoModel = {
     ) => {
 
         try {
-            const pool = await getConnection();
+            const pool = await getConnection(); //obtém a conexão com o banco de dados
 
             const querySQL = `
                 INSERT INTO Pedidos (
@@ -65,9 +65,9 @@ const pedidoModel = {
                     @idCliente, @dataPedido, @tipoEntrega,
                     @distanciaKm, @pesoCarga, @valorKm, @valorKg
                 )
-            `;
+            `; //consulta SQL para inserir um novo pedido
 
-            await pool.request()
+            await pool.request() //cria uma requisição ao banco de dados
                 .input("idCliente", sql.UniqueIdentifier, idCliente)
                 .input("dataPedido", sql.Date, dataPedido)
                 .input("tipoEntrega", sql.VarChar(10), tipoEntrega)
@@ -75,15 +75,15 @@ const pedidoModel = {
                 .input("pesoCarga", sql.Decimal(10,2), pesoCarga)
                 .input("valorKm", sql.Decimal(10,2), valorKm)
                 .input("valorKg", sql.Decimal(10,2), valorKg)
-                .query(querySQL);
+                .query(querySQL);//insere o pedido no banco de dados
 
         } catch (error) {
-            console.error("ERRO ao inserir pedido:", error);
+            console.error("ERRO ao inserir pedido:", error); 
             throw error;
         }
     },
 
-    atualizarPedido: async (
+    atualizarPedido: async ( //atualiza um pedido
         idPedido,
         idCliente,
         dataPedido,
@@ -95,7 +95,7 @@ const pedidoModel = {
     ) => {
 
         try {
-            const pool = await getConnection();
+            const pool = await getConnection(); //obtém a conexão com o banco de dados
 
             const querySQL = `
                 UPDATE Pedidos
@@ -108,9 +108,9 @@ const pedidoModel = {
                     valorKm = @valorKm,
                     valorKg = @valorKg
                 WHERE idPedido = @idPedido
-            `;
+            `; //consulta SQL para atualizar um pedido
 
-            await pool.request()
+            await pool.request() //cria uma requisição ao banco de dados
                 .input("idPedido", sql.UniqueIdentifier, idPedido)
                 .input("idCliente", sql.UniqueIdentifier, idCliente)
                 .input("dataPedido", sql.Date, dataPedido)
@@ -119,7 +119,7 @@ const pedidoModel = {
                 .input("pesoCarga", sql.Decimal(10,2), pesoCarga)
                 .input("valorKm", sql.Decimal(10,2), valorKm)
                 .input("valorKg", sql.Decimal(10,2), valorKg)
-                .query(querySQL);
+                .query(querySQL); //atualiza o pedido no banco de dados
 
         } catch (error) {
             console.error("ERRO ao atualizar pedido:", error);
@@ -127,23 +127,23 @@ const pedidoModel = {
         }
     },
 
-    deletarPedido: async (idPedido) => {
+    deletarPedido: async (idPedido) => { //deleta um pedido
         try {
-            const pool = await getConnection();
+            const pool = await getConnection(); //obtém a conexão com o banco de dados
 
             const querySQL = `
                 DELETE FROM Pedidos WHERE idPedido = @idPedido
             `;
 
             await pool.request()
-                .input("idPedido", sql.UniqueIdentifier, idPedido)
+                .input("idPedido", sql.UniqueIdentifier, idPedido) //adiciona o parâmetro idPedido à consulta
                 .query(querySQL);
 
         } catch (error) {
             console.error("ERRO ao deletar pedido:", error);
-            throw error;
+            throw error; //lança o erro para ser tratado pelo chamador
         }
     }
 };
 
-module.exports = { pedidoModel };
+module.exports = { pedidoModel }; //exporta o pedidoModel
