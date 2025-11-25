@@ -43,15 +43,7 @@ const pedidoModel = {
         }
     },
 
-    inserirPedido: async ( //insere um novo pedido
-        idCliente,
-        dataPedido,
-        tipoEntrega,
-        distanciaKm,
-        pesoCarga,
-        valorKm,
-        valorKg
-    ) => {
+    inserirPedido: async ( idCliente, dataPedido, tipoEntrega, distanciaKm, pesoCarga, valorKm, valorKg) => {
 
         try {
             const pool = await getConnection(); //obtém a conexão com o banco de dados

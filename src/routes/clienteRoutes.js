@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {clienteController} = require("../controllers/clienteController");
+const { clienteController } = require("../controllers/clienteController");
 
 //GET /clientes -> Lista todos os Clientes
 router.get("/clientes", clienteController.listarClientes);
