@@ -20,4 +20,3 @@ app.use('/', entregaRoutes); // Usa as rotas de entregas
 app.listen(PORT, () => { // Inicia o servidor
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
-//asdadsadasdasdsad
